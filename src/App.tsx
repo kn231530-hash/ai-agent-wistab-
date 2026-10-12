@@ -1,281 +1,53 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import React, { useMemo, useState } from 'react';
+import { Search, Sparkles, Bot, Code2, PenLine, BriefcaseBusiness, Palette, BookOpen, CalendarDays, ArrowUpRight, X, Send, Menu, Heart, CheckCircle2 } from 'lucide-react';
 
-import React, { useState } from 'react';
-import { Header } from './components/Header';
-import { MobileFrame } from './components/MobileFrame';
-import { ExploreScreen } from './components/screens/ExploreScreen';
-import { DetailScreen } from './components/screens/DetailScreen';
-import { TripsScreen } from './components/screens/TripsScreen';
-import { CheckoutScreen } from './components/screens/CheckoutScreen';
-import { WishlistScreen } from './components/screens/WishlistScreen';
-import { HostScreen } from './components/screens/HostScreen';
-import { AllScreensCanvas } from './components/screens/AllScreensCanvas';
-import { SearchModal } from './components/modals/SearchModal';
-import { FilterModal } from './components/modals/FilterModal';
-import { GalleryModal } from './components/modals/GalleryModal';
-import { MOCK_STAYS, INITIAL_RESERVATION } from './data/mockStays';
-import { ScreenType, ViewMode, Stay, Reservation } from './types';
-
+type Agent = { id: number; name: string; role: string; category: string; icon: React.ReactNode; description: string; tags: string[]; featured?: boolean };
+const agents: Agent[] = [
+  { id: 1, name: 'Content Studio', role: 'Writing assistant', category: 'Writing', icon: <PenLine />, description: 'Create blog drafts, product descriptions, social captions, and polished professional messages.', tags: ['Copywriting', 'Blogs', 'Social media'], featured: true },
+  { id: 2, name: 'Business Planner', role: 'Business assistant', category: 'Business', icon: <BriefcaseBusiness />, description: 'Turn your ideas into practical plans, clear goals, and step-by-step business checklists.', tags: ['Strategy', 'Planning', 'Startups'] },
+  { id: 3, name: 'Research Helper', role: 'Research assistant', category: 'Research', icon: <BookOpen />, description: 'Break down complex topics, organize research questions, and summarize your own notes.', tags: ['Learning', 'Summaries', 'Analysis'] },
+  { id: 4, name: 'Design Brainstormer', role: 'Creative assistant', category: 'Design', icon: <Palette />, description: 'Explore visual directions, brand concepts, campaign ideas, and creative briefs.', tags: ['Branding', 'Ideas', 'Creative'] },
+  { id: 5, name: 'Code Helper', role: 'Developer assistant', category: 'Development', icon: <Code2 />, description: 'Understand code, plan features, troubleshoot errors, and map out website improvements.', tags: ['Coding', 'Debugging', 'Web'] },
+  { id: 6, name: 'Daily Focus', role: 'Productivity assistant', category: 'Productivity', icon: <CalendarDays />, description: 'Turn a busy to-do list into a realistic schedule with focused priorities.', tags: ['Tasks', 'Focus', 'Planning'] },
+];
+const categories = [
+  { name: 'Writing', subtitle: 'Content & copy', icon: <PenLine /> },
+  { name: 'Business', subtitle: 'Grow your work', icon: <BriefcaseBusiness /> },
+  { name: 'Research', subtitle: 'Learn faster', icon: <BookOpen /> },
+  { name: 'Design', subtitle: 'Creative ideas', icon: <Palette /> },
+  { name: 'Development', subtitle: 'Build & debug', icon: <Code2 /> },
+  { name: 'Productivity', subtitle: 'Plan your day', icon: <CalendarDays /> },
+];
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('explore');
-  const [viewMode, setViewMode] = useState<ViewMode>('mobile');
-  const [stays, setStays] = useState<Stay[]>(MOCK_STAYS);
-  const [selectedStay, setSelectedStay] = useState<Stay>(MOCK_STAYS[0]);
-  const [savedStayIds, setSavedStayIds] = useState<string[]>([
-    'obsidian-pavilion',
-    'koto-fjord-sanctuary',
-  ]);
-  const [reservation, setReservation] = useState<Reservation>(INITIAL_RESERVATION);
-  const [currency, setCurrency] = useState<string>('USD');
-
-  // Modals
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-
-  // Active Checkout Booking Payload
-  const [activeBookingData, setActiveBookingData] = useState<{
-    stay: Stay;
-    checkInDate: string;
-    checkOutDate: string;
-    guests: number;
-    addons: { id: string; name: string; price: number }[];
-    totalPrice: number;
-    nightsCount: number;
-  }>({
-    stay: MOCK_STAYS[0],
-    checkInDate: '2026-11-14',
-    checkOutDate: '2026-11-18',
-    guests: 2,
-    addons: [{ id: 'tea-ceremony', name: 'Private Architecture & Tea Ceremony', price: 140 }],
-    totalPrice: 3872,
-    nightsCount: 4,
-  });
-
-  const currencySymbols: Record<string, string> = {
-    USD: '$',
-    EUR: '€',
-    JPY: '¥',
-    GBP: '£',
-  };
-  const currencySymbol = currencySymbols[currency] || '$';
-
-  // Toggle Save / Wishlist
-  const handleToggleSave = (stayId: string) => {
-    setSavedStayIds((prev) =>
-      prev.includes(stayId) ? prev.filter((id) => id !== stayId) : [...prev, stayId]
-    );
-  };
-
-  const handleRemoveSave = (stayId: string) => {
-    setSavedStayIds((prev) => prev.filter((id) => id !== stayId));
-  };
-
-  const handleSelectStay = (stay: Stay) => {
-    setSelectedStay(stay);
-  };
-
-  const handleStartCheckout = (data: typeof activeBookingData) => {
-    setActiveBookingData(data);
-    setSelectedStay(data.stay);
-    setCurrentScreen('checkout');
-  };
-
-  const handleCompleteBooking = (newRes: Reservation) => {
-    setReservation(newRes);
-  };
-
-  // Search Filter Handler
-  const handleApplySearch = ({ destination, guests, category }: { destination: string; guests: number; category: string }) => {
-    let result = [...MOCK_STAYS];
-    if (destination.trim()) {
-      const q = destination.toLowerCase();
-      result = result.filter(
-        (s) =>
-          s.location.toLowerCase().includes(q) ||
-          s.country.toLowerCase().includes(q) ||
-          s.title.toLowerCase().includes(q)
-      );
-    }
-    if (category && category !== 'All Escapes') {
-      result = result.filter((s) => s.category === category);
-    }
-    result = result.filter((s) => s.maxGuests >= guests);
-    setStays(result.length > 0 ? result : MOCK_STAYS);
-  };
-
-  // Filter Modal Handler
-  const handleApplyFilters = ({ maxPrice, minBedrooms, selectedAmenities }: { maxPrice: number; minBedrooms: number; selectedAmenities: string[] }) => {
-    let result = MOCK_STAYS.filter((s) => s.pricePerNight <= maxPrice && s.bedrooms >= minBedrooms);
-    if (selectedAmenities.length > 0) {
-      result = result.filter((s) =>
-        selectedAmenities.every((amenity) =>
-          s.amenities.some((a) => a.name.toLowerCase().includes(amenity.toLowerCase()))
-        )
-      );
-    }
-    setStays(result.length > 0 ? result : MOCK_STAYS);
-  };
-
-  const savedStaysList = MOCK_STAYS.filter((s) => savedStayIds.includes(s.id));
-
-  // Render the current screen component
-  const renderScreenContent = (compact = false) => {
-    switch (currentScreen) {
-      case 'explore':
-        return (
-          <ExploreScreen
-            stays={stays}
-            selectedStay={selectedStay}
-            onSelectStay={handleSelectStay}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            savedStayIds={savedStayIds}
-            onToggleSave={handleToggleSave}
-            onOpenSearch={() => setIsSearchOpen(true)}
-            onOpenFilter={() => setIsFilterOpen(true)}
-            currencySymbol={currencySymbol}
-            isCompact={compact}
-          />
-        );
-      case 'detail':
-        return (
-          <DetailScreen
-            stay={selectedStay}
-            onBack={() => setCurrentScreen('explore')}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            isSaved={savedStayIds.includes(selectedStay.id)}
-            onToggleSave={handleToggleSave}
-            currencySymbol={currencySymbol}
-            onStartCheckout={handleStartCheckout}
-            onOpenGallery={() => setIsGalleryOpen(true)}
-          />
-        );
-      case 'trips':
-        return (
-          <TripsScreen
-            reservation={reservation}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            onSelectStay={handleSelectStay}
-            currencySymbol={currencySymbol}
-          />
-        );
-      case 'checkout':
-        return (
-          <CheckoutScreen
-            stay={selectedStay}
-            bookingData={activeBookingData}
-            onBack={() => setCurrentScreen('detail')}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            onCompleteBooking={handleCompleteBooking}
-            currencySymbol={currencySymbol}
-          />
-        );
-      case 'wishlist':
-        return (
-          <WishlistScreen
-            savedStays={savedStaysList}
-            onRemoveSave={handleRemoveSave}
-            onSelectStay={handleSelectStay}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            currencySymbol={currencySymbol}
-          />
-        );
-      case 'host':
-        return (
-          <HostScreen
-            stays={stays}
-            onSelectStay={handleSelectStay}
-            onNavigate={(screen) => setCurrentScreen(screen)}
-            currencySymbol={currencySymbol}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-stone-900 text-stone-900 flex flex-col antialiased">
-      
-      {/* Top Application Header */}
-      <Header
-        currentScreen={currentScreen}
-        onSelectScreen={(screen) => setCurrentScreen(screen)}
-        viewMode={viewMode}
-        onSelectViewMode={(mode) => setViewMode(mode)}
-        wishlistCount={savedStayIds.length}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        currency={currency}
-        onChangeCurrency={setCurrency}
-      />
-
-      {/* Main View Area */}
-      <main className="flex-1 flex flex-col justify-center">
-        {viewMode === 'canvas' ? (
-          /* Multi-Screen Figma/Behance Style Canvas */
-          <AllScreensCanvas
-            stays={stays}
-            selectedStay={selectedStay}
-            onSelectStay={handleSelectStay}
-            onSelectScreen={(screen) => {
-              setCurrentScreen(screen);
-              setViewMode('mobile');
-            }}
-            onNavigate={(screen) => {
-              setCurrentScreen(screen);
-              setViewMode('mobile');
-            }}
-            savedStayIds={savedStayIds}
-            onToggleSave={handleToggleSave}
-            onRemoveSave={handleRemoveSave}
-            reservation={reservation}
-            onOpenSearch={() => setIsSearchOpen(true)}
-            onOpenFilter={() => setIsFilterOpen(true)}
-            currencySymbol={currencySymbol}
-          />
-        ) : viewMode === 'mobile' ? (
-          /* Mobile Device Frame View (iPhone 16 Pro) */
-          <div className="w-full flex-1 flex flex-col justify-center items-center py-4 bg-stone-900">
-            <MobileFrame
-              currentScreen={currentScreen}
-              onSelectScreen={(screen) => setCurrentScreen(screen)}
-              wishlistCount={savedStayIds.length}
-            >
-              {renderScreenContent(true)}
-            </MobileFrame>
-          </div>
-        ) : (
-          /* Full Responsive Desktop View */
-          <div className="w-full flex-1 bg-[#faf9f5]">
-            {renderScreenContent(false)}
-          </div>
-        )}
-      </main>
-
-      {/* Global Modals */}
-      <SearchModal
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        onApplySearch={handleApplySearch}
-      />
-
-      <FilterModal
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        maxPrice={1400}
-        onApplyFilters={handleApplyFilters}
-        currencySymbol={currencySymbol}
-      />
-
-      <GalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        stay={selectedStay}
-      />
-
-    </div>
-  );
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('All agents');
+  const [activeAgent, setActiveAgent] = useState<Agent | null>(null);
+  const [chatInput, setChatInput] = useState('');
+  const [messages, setMessages] = useState<string[]>([]);
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [saved, setSaved] = useState<number[]>([]);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const visibleAgents = useMemo(() => agents.filter(a => (category === 'All agents' || a.category === category) && (a.name + ' ' + a.role + ' ' + a.description + ' ' + a.tags.join(' ')).toLowerCase().includes(query.toLowerCase())), [category, query]);
+  const openAgent = (agent: Agent) => { setActiveAgent(agent); setMessages(['Hi! I am the ' + agent.name + ' preview. Tell me what you would like help with.']); setChatInput(''); };
+  const sendMessage = (e: React.FormEvent) => { e.preventDefault(); const msg = chatInput.trim(); if (!msg || !activeAgent) return; setMessages(prev => [...prev, 'You: ' + msg, 'Demo reply: Start by defining your goal, sharing the relevant context, and describing what a useful result should look like. This preview is not connected to a live AI model yet.']); setChatInput(''); };
+  return <div className="site-shell">
+    <div className="announcement"><div className="container announcement-inner"><span><Sparkles size={14} /> Your workspace for smarter work</span><span>Discover · Create · Automate</span></div></div>
+    <header className="site-header"><div className="container nav-row">
+      <a className="brand" href="#"><span className="brand-mark"><Sparkles size={20} /></span><span>wistab<span className="brand-accent">AI</span><i>.</i></span></a>
+      <form className="search-bar" onSubmit={e => { e.preventDefault(); document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' }); }}><Search size={19} /><input aria-label="Search agents" placeholder="Search AI agents, tasks, or categories…" value={query} onChange={e => setQuery(e.target.value)} /><button type="submit">Search</button></form>
+      <nav className={mobileMenu ? 'nav-links nav-open' : 'nav-links'}><a href="#agents" onClick={() => setMobileMenu(false)}>Explore agents</a><a href="#categories" onClick={() => setMobileMenu(false)}>Categories</a><a href="#creators" onClick={() => setMobileMenu(false)}>For creators</a></nav>
+      <button className="sign-in" onClick={() => setAccountOpen(true)}>Sign in <ArrowUpRight size={15}/></button>
+      <button className="mobile-menu" aria-label="Toggle navigation" onClick={() => setMobileMenu(!mobileMenu)}>{mobileMenu ? <X/> : <Menu/>}</button>
+    </div></header>
+    <main>
+      <section className="hero-section"><div className="container"><div className="hero-panel"><div className="hero-glow"></div><div className="hero-copy"><div className="eyebrow"><span></span> THE AI AGENT MARKETPLACE</div><h1>Meet your next<br/><em>AI teammate.</em></h1><p>Discover helpful AI agents for writing, business, research, design, and everyday work — all in one place.</p><div className="hero-actions"><a className="btn btn-light" href="#agents">Explore AI agents <ArrowUpRight size={17}/></a><a className="btn btn-ghost" href="#categories">Browse categories</a></div><div className="hero-proof"><div className="avatar-stack"><span>✦</span><span>✳</span><span>◈</span></div><span><b>One place for your AI toolkit</b><small>Find a better way to get things done</small></span></div></div><div className="hero-art" aria-hidden="true"><div className="art-orbit orbit-one"></div><div className="art-orbit orbit-two"></div><div className="art-core"><Sparkles size={70}/></div><div className="float-card float-top"><span className="mini-icon purple"><Bot size={19}/></span><span><b>AI assistants</b><small>Ready to explore</small></span><CheckCircle2 size={18} className="check"/></div><div className="float-card float-bottom"><span className="mini-icon peach"><Sparkles size={19}/></span><span><b>Ideas into action</b><small>One step at a time</small></span></div></div></div>
+      <div className="benefit-row"><div><span className="benefit-icon violet"><Sparkles/></span><span><b>Work smarter</b><small>Automate everyday tasks</small></span></div><div><span className="benefit-icon mint"><Search/></span><span><b>Easy discovery</b><small>Find tools for your needs</small></span></div><div><span className="benefit-icon peach"><Heart/></span><span><b>Made for you</b><small>Explore at your own pace</small></span></div><div><span className="benefit-icon blue"><CheckCircle2/></span><span><b>Clear and simple</b><small>A friendly place to start</small></span></div></div></div></section>
+      <section className="section categories-section" id="categories"><div className="container"><div className="section-heading"><div><span className="section-kicker">FIND YOUR FLOW</span><h2>Explore by category</h2><p>Find an agent for the job you need to get done.</p></div><a className="text-link" href="#agents">View all agents <ArrowUpRight size={16}/></a></div><div className="category-grid">{categories.map((c, i) => <button key={c.name} className={'category-tile tile-' + i + (category === c.name ? ' selected' : '')} onClick={() => { setCategory(category === c.name ? 'All agents' : c.name); document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' }); }}><span className="category-icon">{c.icon}</span><span className="category-name">{c.name}</span><span className="category-subtitle">{c.subtitle}</span><ArrowUpRight className="category-arrow" size={16}/></button>)}</div></div></section>
+      <section className="section agents-section" id="agents"><div className="container"><div className="section-heading agents-heading"><div><span className="section-kicker">THE AGENT DIRECTORY</span><h2>Find your next favorite <em>agent.</em></h2><p>Sample listings to help you explore what AI can do.</p></div><div className="result-count">{visibleAgents.length} agents <span>available to explore</span></div></div><div className="filter-row"><div className="filter-chips">{['All agents', ...categories.map(c => c.name)].map(c => <button key={c} className={'filter-chip' + (category === c ? ' active' : '')} onClick={() => setCategory(c)}>{c}</button>)}</div><span className="sort-label">Curated for everyday work</span></div>
+      {visibleAgents.length ? <div className="agent-grid">{visibleAgents.map(agent => <article className="agent-card" key={agent.id}><div className="agent-card-top"><span className={'agent-icon agent-icon-' + agent.id}>{agent.icon}</span><button className={'save-btn' + (saved.includes(agent.id) ? ' saved' : '')} aria-label={saved.includes(agent.id) ? 'Remove saved agent' : 'Save agent'} onClick={() => setSaved(prev => prev.includes(agent.id) ? prev.filter(id => id !== agent.id) : [...prev, agent.id])}><Heart size={18} fill={saved.includes(agent.id) ? 'currentColor' : 'none'}/></button></div><div className="agent-meta"><span>{agent.category}</span>{agent.featured && <span className="featured-label">✦ FEATURED</span>}</div><h3>{agent.name}</h3><p className="agent-role">{agent.role}</p><p className="agent-description">{agent.description}</p><div className="tag-list">{agent.tags.map(tag => <span key={tag}>{tag}</span>)}</div><div className="agent-card-bottom"><span className="availability"><span></span> Demo available</span><button className="try-btn" onClick={() => openAgent(agent)}>Try agent <ArrowUpRight size={15}/></button></div></article>)}</div> : <div className="empty-state"><Search size={28}/><h3>No agents found</h3><p>Try another keyword or select a different category.</p><button className="btn btn-purple" onClick={() => { setQuery(''); setCategory('All agents'); }}>Clear filters</button></div>}</div></section>
+      <section className="creator-section" id="creators"><div className="container"><div className="creator-banner"><div className="creator-symbol"><Bot size={34}/></div><div className="creator-copy"><span className="section-kicker">FOR BUILDERS & CREATORS</span><h2>Have an idea for an AI agent?</h2><p>Let’s make useful AI easier for everyone to discover.</p></div><a className="btn btn-light" href="mailto:hello@wistab.ai?subject=AI%20Agent%20Marketplace">Get in touch <ArrowUpRight size={17}/></a><div className="banner-decoration">✳</div></div></div></section>
+    </main>
+    <footer><div className="container footer-main"><div className="footer-brand"><a className="brand brand-footer" href="#"><span className="brand-mark"><Sparkles size={19}/></span><span>wistab<span className="brand-accent">AI</span><i>.</i></span></a><p>A friendly place to discover AI assistants for creativity, business, learning, and everyday productivity.</p></div><div className="footer-links"><div><b>Explore</b><a href="#agents">AI agents</a><a href="#categories">Categories</a></div><div><b>Wistab AI</b><a href="#creators">For creators</a><a href="mailto:hello@wistab.ai">Contact</a></div></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} Wistab AI. All rights reserved.</span><span>Agent cards are sample listings. Live AI and accounts require backend setup.</span></div></footer>
+    {(activeAgent || accountOpen) && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) { setActiveAgent(null); setAccountOpen(false); } }}><div className="dialog" role="dialog" aria-modal="true" aria-label={accountOpen ? 'Sign in information' : activeAgent?.name}><div className="dialog-heading"><div><span className="section-kicker">{accountOpen ? 'WISTAB ACCOUNT' : 'INTERACTIVE PREVIEW'}</span><h2>{accountOpen ? 'Welcome to Wistab AI' : activeAgent?.name}</h2></div><button className="dialog-close" aria-label="Close" onClick={() => { setActiveAgent(null); setAccountOpen(false); }}><X/></button></div>{accountOpen ? <><p className="dialog-intro">Sign-in is not connected yet. Authentication and a database must be configured before accounts can be created or saved across devices.</p><button className="btn btn-purple dialog-wide" onClick={() => setAccountOpen(false)}>Got it</button></> : <><p className="dialog-intro">This is a front-end demo. Connect an AI API to enable real responses from this agent.</p><div className="chat-log">{messages.map((m, i) => <div key={i} className={m.startsWith('You:') ? 'chat-bubble user-bubble' : 'chat-bubble'}>{m}</div>)}</div><form className="chat-form" onSubmit={sendMessage}><input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="Describe what you need…" required/><button className="btn btn-purple" type="submit" aria-label="Send message"><Send size={17}/></button></form></>}</div></div>}
+  </div>;
 }
