@@ -23,3 +23,19 @@
 .chat-form .btn{width:46px;height:46px;flex-shrink:0;border-radius:13px;box-shadow:0 5px 12px #6845d92b}
 .dialog-wide{margin:0 24px 22px;width:calc(100% - 48px)}
 @media(max-width:520px){.dialog{border-radius:17px}.dialog-heading{padding:18px}.dialog-intro{padding:12px 18px 10px}.chat-log{margin-inline:12px;padding:12px;min-height:150px}.chat-form{padding:0 12px 14px}.chat-bubble{max-width:94%;font-size:12px}}
+
+
+/* Black & white chatbot theme requested by user */
+.dialog{background:#fff;color:#111;border:1px solid #111;border-radius:18px;box-shadow:0 28px 90px #0004}
+.dialog-heading{background:#fff;border-bottom:1px solid #e5e5e5}
+.dialog-heading .section-kicker{color:#555}
+.dialog-heading h2{color:#111}
+.dialog-close{background:#111;color:#fff;border-radius:50%}
+.dialog-intro{color:#555}
+.chat-log{background:#f7f7f7;border:1px solid #e7e7e7;border-radius:14px}
+.chat-bubble{background:#e9e9e9;color:#111;border:1px solid #dedede;box-shadow:none}
+.user-bubble{background:#111;color:#fff;border-color:#111}
+.chat-form input{border:1px solid #cfcfcf;background:#fff;color:#111;outline-color:#111}
+.chat-form .btn,.dialog-wide{background:#111;color:#fff;box-shadow:none}
+.chat-form .btn:hover,.dialog-wide:hover{background:#333}
+.dialog .section-kicker{color:#555}
