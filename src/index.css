@@ -414,3 +414,12 @@ footer{background:#282828}
  .market-try-btn{width:auto}
  .market-promise-row b{font-size:8px}
 }
+
+/* Website QR code modal */
+.qr-action{gap:7px}
+.website-qr-content{display:flex;flex-direction:column;align-items:center;padding:0 24px 24px;text-align:center}
+.website-qr-content .dialog-intro{padding:0;margin:0 0 15px;text-align:center}
+.website-qr-image{display:block;width:220px;height:220px;max-width:100%;object-fit:contain;padding:8px;background:#fff;border:1px solid #eee;border-radius:4px}
+.website-qr-url{display:block;margin-top:12px;color:#f85606;font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.website-qr-content .dialog-wide{margin:18px 0 0;width:100%}
+@media(max-width:720px){.qr-action{display:flex}.website-qr-content{padding:0 18px 20px}.website-qr-image{width:200px;height:200px}}
