@@ -423,3 +423,58 @@ footer{background:#282828}
 .website-qr-url{display:block;margin-top:12px;color:#f85606;font-size:11px;font-weight:800;overflow-wrap:anywhere}
 .website-qr-content .dialog-wide{margin:18px 0 0;width:100%}
 @media(max-width:720px){.qr-action{display:flex}.website-qr-content{padding:0 18px 20px}.website-qr-image{width:200px;height:200px}}
+
+
+/* Requested site-wide monochrome black-and-white design */
+:root{--market-orange:#111;--market-accent:#111;--market-ink:#111;--market-line:#e5e5e5}
+.daraz-shell{background:#fff!important;color:#111!important}
+.daraz-shell .market-topline{background:#111!important;color:#fff!important}
+.daraz-shell .market-header,.daraz-shell .market-nav-wrap,.daraz-shell .market-category-nav{background:#fff!important;color:#111!important;border-color:#e5e5e5!important}
+.daraz-shell .market-brand,.daraz-shell .market-brand .brand-accent,.daraz-shell .market-brand i{color:#111!important}
+.daraz-shell .market-brand .brand-mark{background:#111!important;color:#fff!important}
+.daraz-shell .market-search{background:#f7f7f7!important;border-color:#111!important}
+.daraz-shell .market-search button,.daraz-shell .market-primary-btn,.daraz-shell .market-try-btn,.daraz-shell .market-action.primary-action{background:#111!important;color:#fff!important;border-color:#111!important}
+.daraz-shell .market-search button:hover,.daraz-shell .market-primary-btn:hover,.daraz-shell .market-try-btn:hover{background:#333!important}
+.daraz-shell .market-action,.daraz-shell .market-category-inner>a,.daraz-shell .market-nav a{color:#111!important}
+.daraz-shell .market-action:hover,.daraz-shell .market-category-inner>a:hover{color:#555!important}
+.daraz-shell .market-hero-banner{background:#111!important;color:#fff!important}
+.daraz-shell .market-hero-copy .market-kicker,.daraz-shell .market-hero-copy h1 em{color:#fff!important}
+.daraz-shell .market-hero-copy>p{color:#ddd!important}
+.daraz-shell .hero-bot-tile{background:#fff!important;color:#111!important;border-color:#fff!important}
+.daraz-shell .hero-bot-tile svg,.daraz-shell .hero-bot-tile .bot-sparkle{color:#111!important}
+.daraz-shell .hero-orbit,.daraz-shell .orbit-a,.daraz-shell .orbit-b{border-color:#ffffff55!important}
+.daraz-shell .hero-floating-label{background:#fff!important;color:#111!important}
+.daraz-shell .label-icon,.daraz-shell .label-purple{background:#eee!important;color:#111!important}
+.daraz-shell .hero-sticker{background:#fff!important;color:#111!important;box-shadow:0 4px 0 #aaa!important}
+.daraz-shell .market-promise-row>div,.daraz-shell .market-category-card,.daraz-shell .market-filter-strip,.daraz-shell .market-product-card,.daraz-shell .market-support-inner{background:#fff!important;border-color:#e5e5e5!important;color:#111!important}
+.daraz-shell .promise-icon,.daraz-shell .market-category-icon{background:#f0f0f0!important;color:#111!important}
+.daraz-shell .market-section-heading h2,.daraz-shell .market-product-info h3,.daraz-shell .market-support-inner h2,.daraz-shell .promo-copy h2{color:#111!important}
+.daraz-shell .market-kicker,.daraz-shell .market-section-heading h2 em,.daraz-shell .market-text-link,.daraz-shell .market-listing-side>span,.daraz-shell .market-category-arrow,.daraz-shell .product-category-label,.daraz-shell .product-price-row strong,.daraz-shell .market-about-strip>.container,.daraz-shell .market-about-strip a{color:#111!important}
+.daraz-shell .market-filter-chips button{background:#fff!important;color:#333!important;border-color:#ddd!important}
+.daraz-shell .market-filter-chips button:hover,.daraz-shell .market-filter-chips button.active,.daraz-shell .market-category-card:hover,.daraz-shell .market-category-card.chosen{background:#f4f4f4!important;color:#111!important;border-color:#111!important}
+.daraz-shell .market-product-image,.daraz-shell .product-coral,.daraz-shell .product-gold,.daraz-shell .product-blue,.daraz-shell .product-pink,.daraz-shell .product-mint,.daraz-shell .product-violet{background:linear-gradient(135deg,#f7f7f7,#dedede)!important;color:#111!important}
+.daraz-shell .market-product-image:before{background:#fff9!important}
+.daraz-shell .market-product-image:after{background:#00000008!important}
+.daraz-shell .product-type-label,.daraz-shell .product-image-caption{background:#ffffffd9!important;color:#222!important}
+.daraz-shell .product-art-icon{background:#ffffffdb!important;border-color:#fff!important;color:#111!important}
+.daraz-shell .product-ribbon{background:#111!important;color:#fff!important}
+.daraz-shell .market-heart:hover,.daraz-shell .market-heart.is-saved{background:#111!important;color:#fff!important}
+.daraz-shell .product-rating{color:#111!important}
+.daraz-shell .product-available{color:#333!important}
+.daraz-shell .product-available i{background:#111!important}
+.daraz-shell .product-tags span{background:#f3f3f3!important;color:#444!important}
+.daraz-shell .market-promo-banner{background:#f3f3f3!important;border-color:#ddd!important}
+.daraz-shell .promo-badge{background:#111!important;color:#fff!important}
+.daraz-shell .promo-decoration{color:#ddd!important}
+.daraz-shell .market-support-link{background:#fff!important;border-color:#ddd!important;color:#111!important}
+.daraz-shell .market-support-link b{color:#111!important}
+.daraz-shell .market-about-strip{background:#fafafa!important;border-color:#e5e5e5!important}
+.daraz-shell .market-footer{background:#111!important;color:#fff!important}
+.daraz-shell .market-footer-links a:hover{color:#ddd!important}
+.daraz-shell .market-dialog .market-primary-btn,.daraz-shell .market-dialog .dialog-wide{background:#111!important;color:#fff!important;border-color:#111!important}
+.daraz-shell .market-dialog .chat-bubble{background:#eee!important;color:#111!important;border-color:#ddd!important}
+.daraz-shell .market-dialog .user-bubble{background:#111!important;color:#fff!important;border-color:#111!important}
+.daraz-shell .saved-agent-row button{background:#eee!important;color:#111!important}
+.daraz-shell .saved-empty{color:#111!important}
+.daraz-shell .website-qr-url{color:#111!important}
+.daraz-shell a:focus-visible,.daraz-shell button:focus-visible{outline:2px solid #111!important;outline-offset:3px}
