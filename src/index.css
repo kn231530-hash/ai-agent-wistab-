@@ -8,3 +8,18 @@
 
 .about-section{padding-top:36px}.about-panel{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:start;padding:34px;border:1px solid var(--line);border-radius:20px;background:white}.about-panel h2,.contact-panel h2{font-family:Manrope,sans-serif;font-size:29px;line-height:1.2;letter-spacing:-1px;margin:0;font-weight:800}.about-copy p,.contact-panel>div>p{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 13px}.about-copy .text-link{margin-top:18px}.contact-panel{display:grid;grid-template-columns:.9fr 1.1fr;gap:45px;padding:35px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(130deg,#f5f0ff,#fff 70%)}.contact-panel>div>p{margin-top:12px;max-width:360px}.contact-email{display:inline-flex;align-items:center;gap:9px;margin-top:12px;background:white;border:1px solid #e7defb;border-radius:10px;padding:12px 14px;color:#5633bc;font-size:13px;font-weight:800}.contact-form{display:grid;gap:12px}.contact-form label{display:grid;gap:6px;color:#625875;font-size:11px;font-weight:700}.contact-form input,.contact-form textarea{width:100%;border:1px solid #e8e2f2;border-radius:9px;padding:11px 12px;outline-color:#b9a5fa;background:white;color:var(--ink);font-size:12px;resize:vertical}.contact-form .btn{justify-self:start}.contact-form small{font-size:10px;color:#8a8298}
 @media(max-width:720px){.about-panel,.contact-panel{grid-template-columns:1fr;gap:20px;padding:23px}.about-panel h2,.contact-panel h2{font-size:25px}.nav-links.nav-open{flex-wrap:wrap;gap:14px}}
+
+
+/* Chatbot preview polish */
+.dialog{border:1px solid #eee8fa;padding:0;overflow:hidden}
+.dialog-heading{padding:22px 24px 17px;background:linear-gradient(120deg,#f7f3ff,#fff);border-bottom:1px solid #eee8f8}
+.dialog-heading h2{margin-top:4px}
+.dialog-intro{margin:0;padding:14px 24px 10px}
+.chat-log{margin:0 18px 14px;padding:16px;gap:12px;max-height:340px;min-height:170px;background:#faf8ff;border:1px solid #f0ebfa;border-radius:15px}
+.chat-bubble{position:relative;max-width:88%;padding:11px 14px;border-radius:15px 15px 15px 5px;background:#eee8ff;color:#44336f;font-size:13px;box-shadow:0 2px 5px #33205208}
+.user-bubble{border-radius:15px 15px 5px 15px;background:linear-gradient(135deg,#7652e4,#5834c4);color:white}
+.chat-form{padding:0 18px 20px;align-items:center}
+.chat-form input{min-height:46px;border-radius:13px;padding:12px 14px;background:#fff}
+.chat-form .btn{width:46px;height:46px;flex-shrink:0;border-radius:13px;box-shadow:0 5px 12px #6845d92b}
+.dialog-wide{margin:0 24px 22px;width:calc(100% - 48px)}
+@media(max-width:520px){.dialog{border-radius:17px}.dialog-heading{padding:18px}.dialog-intro{padding:12px 18px 10px}.chat-log{margin-inline:12px;padding:12px;min-height:150px}.chat-form{padding:0 12px 14px}.chat-bubble{max-width:94%;font-size:12px}}
