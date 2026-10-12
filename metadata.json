@@ -1,0 +1,6 @@
+{
+  "name": "Lumina Architectural Escapes",
+  "description": "Boutique stays and curated architectural escapes with multi-screen exploration, interactive reservations, trip itineraries, and checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
