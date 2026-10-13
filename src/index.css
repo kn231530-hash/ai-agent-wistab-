@@ -478,3 +478,75 @@ footer{background:#282828}
 .daraz-shell .saved-empty{color:#111!important}
 .daraz-shell .website-qr-url{color:#111!important}
 .daraz-shell a:focus-visible,.daraz-shell button:focus-visible{outline:2px solid #111!important;outline-offset:3px}
+
+
+/* New bright blue Wistab AI hero design */
+.daraz-shell{background:#fff!important;color:#111!important}
+.daraz-shell .market-topline{display:none!important}
+.daraz-shell .market-header{border-bottom:1px solid #edf1f8!important}
+.daraz-shell .market-nav{min-height:88px!important}
+.daraz-shell .market-brand{font-family:Manrope,sans-serif!important;font-size:25px!important;letter-spacing:-1px!important}
+.daraz-shell .market-brand .brand-mark{background:transparent!important;color:#2164f5!important;width:42px!important;height:42px!important}
+.daraz-shell .market-brand .brand-mark svg{width:34px!important;height:34px!important}
+.daraz-shell .market-brand .brand-accent,.daraz-shell .market-brand i{color:#111!important}
+.daraz-shell .market-search{background:#f7f9fd!important;border:1px solid #e4eaf5!important;border-radius:13px!important}
+.daraz-shell .market-search button{background:#111!important;border-radius:10px!important}
+.daraz-shell .market-category-nav{border-top:0!important;background:#fff!important}
+.daraz-shell .market-category-inner{min-height:48px!important}
+.daraz-shell .market-category-inner>a{font-weight:600!important}
+.daraz-shell .market-hero-section{padding-top:25px!important;background:linear-gradient(180deg,#f7faff 0%,#fff 100%)!important}
+.daraz-shell .market-hero-layout{grid-template-columns:minmax(0,1fr)!important;min-height:540px!important}
+.daraz-shell .market-side-categories{display:none!important}
+.daraz-shell .market-hero-banner{min-height:540px!important;position:relative!important;overflow:hidden!important;border:1px solid #eef3fb!important;border-radius:28px!important;padding:58px 58px!important;background:radial-gradient(ellipse at 76% 52%,#e7f0ff 0%,#f5f9ff 34%,#fff 72%)!important;color:#111!important;box-shadow:0 22px 70px #153e7a0a!important}
+.daraz-shell .market-hero-copy{width:57%!important;max-width:680px!important;z-index:3!important}
+.daraz-shell .market-hero-copy .market-kicker{display:inline-flex!important;align-items:center!important;gap:10px!important;background:#edf4ff!important;color:#2164f5!important;border:1px solid #d9e7ff!important;border-radius:999px!important;padding:11px 16px!important;letter-spacing:2px!important;font-size:11px!important}
+.daraz-shell .market-hero-copy h1{font-family:Manrope,sans-serif!important;font-size:clamp(48px,5.5vw,76px)!important;line-height:1.02!important;letter-spacing:-4px!important;margin:29px 0 22px!important;font-weight:800!important;color:#080a0e!important}
+.daraz-shell .market-hero-copy h1 em{color:#2164f5!important}
+.daraz-shell .market-hero-copy>p{max-width:500px!important;color:#5a6982!important;font-size:18px!important;line-height:1.75!important}
+.daraz-shell .market-hero-actions{display:flex!important;align-items:center!important;gap:24px!important;flex-wrap:wrap!important;margin-top:29px!important}
+.daraz-shell .market-hero-actions .market-primary-btn{width:auto!important;min-height:58px!important;padding:0 25px!important;border-radius:13px!important;background:#090b0f!important;color:#fff!important;border:1px solid #090b0f!important;font-size:15px!important}
+.daraz-shell .market-how-btn{display:inline-flex!important;align-items:center!important;gap:10px!important;border:0!important;background:transparent!important;color:#19243a!important;font-size:14px!important;font-weight:700!important}
+.daraz-shell .market-how-btn span{display:grid!important;place-items:center!important;width:31px!important;height:31px!important;border:2px solid #25324b!important;border-radius:50%!important;font-size:17px!important}
+.daraz-shell .hero-delivery-note{display:flex!important;align-items:center!important;gap:10px!important;margin-top:42px!important;color:#52627c!important;font-size:13px!important}
+.daraz-shell .hero-delivery-note svg{color:#2164f5!important}
+.daraz-shell .market-hero-art{width:47%!important;right:0!important}
+.daraz-shell .hero-sunburst{background:radial-gradient(circle,#dceaff 0%,#eaf2ff 48%,#d9e8ff 72%,#eef5ff 73%)!important;box-shadow:0 0 0 1px #dce8fb!important}
+.daraz-shell .orbit-a,.daraz-shell .orbit-b{border-color:#cbdfff!important}
+.daraz-shell .hero-bot-tile{width:180px!important;height:180px!important;border-radius:42px!important;background:linear-gradient(145deg,#fff,#f7faff)!important;color:#111!important;box-shadow:0 25px 60px #244b8825,inset 0 2px 3px #fff!important;border:1px solid #fff!important;transform:rotate(-7deg)!important}
+.daraz-shell .hero-bot-tile>svg:first-child{width:86px!important;height:86px!important;stroke-width:1.8!important}
+.daraz-shell .hero-bot-tile .bot-sparkle{color:#2164f5!important}
+.daraz-shell .hero-floating-label{padding:15px 17px!important;border:1px solid #edf1f8!important;border-radius:16px!important;box-shadow:0 15px 40px #244b8815!important}
+.daraz-shell .hero-floating-label b{font-size:13px!important}
+.daraz-shell .hero-floating-label small{font-size:11px!important;color:#71819b!important}
+.daraz-shell .label-icon,.daraz-shell .label-purple{width:43px!important;height:43px!important;border-radius:12px!important;background:#edf3ff!important;color:#2164f5!important}
+.daraz-shell .hero-sticker{display:none!important}
+.daraz-shell .market-promise-row{padding-top:20px!important}
+.daraz-shell .market-promise-row>div{border-radius:15px!important;box-shadow:0 5px 20px #102a5206!important}
+.daraz-shell .promise-icon{background:#edf3ff!important;color:#2164f5!important}
+.daraz-shell .market-kicker,.daraz-shell .market-section-heading h2 em,.daraz-shell .market-text-link,.daraz-shell .market-listing-side>span,.daraz-shell .product-category-label,.daraz-shell .product-price-row strong{color:#2164f5!important}
+.daraz-shell .market-category-card:hover,.daraz-shell .market-category-card.chosen,.daraz-shell .market-filter-chips button.active{border-color:#2164f5!important;background:#f1f6ff!important}
+.daraz-shell .market-category-icon{background:#edf3ff!important;color:#2164f5!important}
+.daraz-shell .market-product-image,.daraz-shell .product-coral,.daraz-shell .product-gold,.daraz-shell .product-blue,.daraz-shell .product-pink,.daraz-shell .product-mint,.daraz-shell .product-violet{background:linear-gradient(135deg,#f2f6ff,#e4edff)!important;color:#2164f5!important}
+.daraz-shell .product-art-icon{color:#2164f5!important}
+.daraz-shell .market-try-btn{background:#111!important;color:#fff!important;border-color:#111!important}
+.daraz-shell .market-promo-banner{background:#f1f6ff!important;border-color:#dce8fb!important}
+.daraz-shell .promo-badge{background:#2164f5!important;color:#fff!important}
+.daraz-shell .market-support-link{border-radius:14px!important}
+@media(max-width:720px){
+ .daraz-shell .market-nav{min-height:70px!important}
+ .daraz-shell .market-hero-section{padding-top:12px!important}
+ .daraz-shell .market-hero-layout{min-height:0!important}
+ .daraz-shell .market-hero-banner{min-height:600px!important;padding:27px 21px!important;border-radius:21px!important}
+ .daraz-shell .market-hero-copy{width:100%!important}
+ .daraz-shell .market-hero-copy .market-kicker{font-size:8px!important;letter-spacing:1.2px!important;padding:9px 11px!important}
+ .daraz-shell .market-hero-copy h1{font-size:43px!important;letter-spacing:-2.4px!important;margin:21px 0 14px!important}
+ .daraz-shell .market-hero-copy>p{font-size:13px!important;max-width:320px!important}
+ .daraz-shell .market-hero-actions{gap:13px!important;margin-top:18px!important}
+ .daraz-shell .market-hero-actions .market-primary-btn{min-height:47px!important;padding:0 15px!important;font-size:12px!important}
+ .daraz-shell .market-how-btn{font-size:11px!important}
+ .daraz-shell .hero-delivery-note{margin-top:20px!important;font-size:10px!important;gap:6px!important}
+ .daraz-shell .market-hero-art{width:100%!important;height:235px!important;bottom:0!important;top:auto!important}
+ .daraz-shell .hero-bot-tile{width:105px!important;height:105px!important;border-radius:26px!important}
+ .daraz-shell .hero-bot-tile>svg:first-child{width:55px!important;height:55px!important}
+ .daraz-shell .market-floating-label{max-width:165px!important}
+}
