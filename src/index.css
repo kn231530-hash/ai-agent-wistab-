@@ -604,3 +604,10 @@ footer{background:#282828}
 .daraz-shell .market-product-card:hover .agent-photo{transform:scale(1.06)!important;opacity:.38!important}
 .daraz-shell .market-product-image .product-image-top,.daraz-shell .market-product-image .product-art-icon,.daraz-shell .market-product-image .product-ribbon,.daraz-shell .market-product-image .product-image-caption{z-index:2!important}
 .daraz-shell .market-product-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#f5f8ff55,#eaf1ff99);z-index:1;pointer-events:none}
+
+
+/* Visible pricing badges on every marketplace agent card */
+.daraz-shell .agent-price-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:32px!important;padding:0 11px!important;border-radius:999px!important;background:#111!important;color:#fff!important;font-size:12px!important;font-weight:800!important;letter-spacing:.1px!important;box-shadow:0 4px 14px #0002!important;white-space:nowrap!important;position:relative!important;z-index:5!important}
+.daraz-shell .market-product-image .product-image-top{display:flex!important;align-items:center!important;gap:8px!important}
+.daraz-shell .market-product-image .product-image-top .market-heart{margin-left:auto!important}
+@media(max-width:720px){.daraz-shell .agent-price-badge{min-height:27px!important;padding:0 8px!important;font-size:10px!important}}
