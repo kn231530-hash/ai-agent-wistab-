@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import ClientFinder from "./components/ClientFinder";
 import ChatWorkspace from "./components/ChatWorkspace";
+import InfoPages from "./components/InfoPages";
 import {
   Search, Sparkles, Bot, Code2, PenLine, BriefcaseBusiness, Palette, BookOpen, Mic, MicOff,
   CalendarDays, ArrowUpRight, X, Send, Menu, Heart, CheckCircle2,
@@ -42,10 +43,10 @@ export default function App() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
-  const [activeView, setActiveView] = useState<"chat" | "mall">("chat");
-  const [viewHistory, setViewHistory] = useState<Array<"chat" | "mall">>(["chat"]);
+  const [activeView, setActiveView] = useState<"chat" | "mall" | "home" | "about" | "features" | "how" | "activity" | "contact">("chat");
+  const [viewHistory, setViewHistory] = useState<Array<typeof activeView>>(["chat"]);
   const [viewIndex, setViewIndex] = useState(0);
-  const navigateView = (view: "chat" | "mall") => {
+  const navigateView = (view: typeof activeView) => {
     setViewHistory(previous => [...previous.slice(0, viewIndex + 1), view]);
     setViewIndex(previous => previous + 1);
     setActiveView(view);
@@ -95,7 +96,7 @@ export default function App() {
     document.getElementById("agents")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  return activeView === "chat" ? <ChatWorkspace onOpenMall={() => navigateView("mall")} onOpenClientFinder={() => { navigateView("mall"); setTimeout(() => document.getElementById("client-finder")?.scrollIntoView({ behavior: "smooth" }), 120); }} onBack={goBack} onForward={goForward} canGoBack={viewIndex > 0} canGoForward={viewIndex < viewHistory.length - 1} /> : <div className="site-shell daraz-shell">
+  return ["home","about","features","how","activity","contact"].includes(activeView) ? <InfoPages page={activeView as "home" | "about" | "features" | "how" | "activity" | "contact"} onNavigate={navigateView} onBack={goBack} onForward={goForward} canGoBack={viewIndex > 0} canGoForward={viewIndex < viewHistory.length - 1} /> : activeView === "chat" ? <ChatWorkspace onOpenMall={() => navigateView("mall")} onOpenClientFinder={() => { navigateView("mall"); setTimeout(() => document.getElementById("client-finder")?.scrollIntoView({ behavior: "smooth" }), 120); }} onOpenInfo={(p) => navigateView(p)} onBack={goBack} onForward={goForward} canGoBack={viewIndex > 0} canGoForward={viewIndex < viewHistory.length - 1} /> : <div className="site-shell daraz-shell">
     <div className="market-topline"><div className="container market-topline-inner"><span>Save more with Wistab AI deals</span><div><a href="#agents">SELL AN AI AGENT</a><a href="#contact">HELP & SUPPORT</a><button onClick={() => setAccountOpen(true)}>SIGN IN / REGISTER</button></div></div></div>
     <header className="site-header market-header"><div className="container market-nav">
       <a className="brand market-brand" href="#" aria-label="Wistab AI home"><span className="brand-mark"><Sparkles size={22}/></span><span>wistab<span className="brand-accent">AI</span><i>.</i></span></a>
@@ -110,7 +111,7 @@ export default function App() {
     </div>
     <div className={"market-category-nav " + (mobileMenu ? "market-nav-open" : "")}><div className="container market-category-inner">
       <a href="#categories" className="all-categories"><Grid2X2 size={17}/> Categories <ChevronDown size={14}/></a>
-      <a href="#agents">AI Agent Mall</a><a href="#" onClick={e => { e.preventDefault(); navigateView("chat"); }}>AI Chat Workspace</a><a href="#client-finder">Client Finder</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
+      <a href="#agents">AI Agent Mall</a><a href="#" onClick={e => { e.preventDefault(); navigateView("chat"); }}>AI Chat Workspace</a><a href="#client-finder">Client Finder</a><a href="#" onClick={e=>{e.preventDefault();navigateView("about");}}>About</a><a href="#" onClick={e=>{e.preventDefault();navigateView("features");}}>Features</a><a href="#" onClick={e=>{e.preventDefault();navigateView("how");}}>How it works</a><a href="#" onClick={e=>{e.preventDefault();navigateView("activity");}}>Activity & Data</a><a href="#" onClick={e=>{e.preventDefault();navigateView("contact");}}>Contact</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
       <span className="category-nav-promo"><Zap size={14}/> Find your next AI teammate</span>
     </div></div></header>
 
