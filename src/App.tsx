@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import ClientFinder from "./components/ClientFinder";
 import {
   Search, Sparkles, Bot, Code2, PenLine, BriefcaseBusiness, Palette, BookOpen, Mic, MicOff,
   CalendarDays, ArrowUpRight, X, Send, Menu, Heart, CheckCircle2,
@@ -98,7 +99,7 @@ export default function App() {
     </div>
     <div className={"market-category-nav " + (mobileMenu ? "market-nav-open" : "")}><div className="container market-category-inner">
       <a href="#categories" className="all-categories"><Grid2X2 size={17}/> Categories <ChevronDown size={14}/></a>
-      <a href="#agents">AI Agent Mall</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
+      <a href="#agents">AI Agent Mall</a><a href="#client-finder">Client Finder</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
       <span className="category-nav-promo"><Zap size={14}/> Find your next AI teammate</span>
     </div></div></header>
 
@@ -129,6 +130,7 @@ export default function App() {
 
       <section className="market-promo-section" id="creators"><div className="container"><div className="market-promo-banner"><div className="promo-badge"><Bot size={31}/></div><div className="promo-copy"><span className="market-kicker">FOR BUILDERS & CREATORS</span><h2>Have an AI agent to share?</h2><p>Bring your assistant to the Wistab AI marketplace and help people work smarter.</p></div><a href="mailto:hello@wistab.ai?subject=List%20an%20AI%20Agent" className="market-primary-btn">List your agent <ArrowUpRight size={16}/></a><Sparkles className="promo-decoration" size={100}/></div></div></section>
       <section className="market-support-section" id="contact"><div className="container market-support-inner"><div><span className="market-kicker">NEED A HAND?</span><h2>We’re here to help.</h2><p>Have a question or a suggestion for the marketplace? Get in touch with our team.</p></div><a className="market-support-link" href="mailto:hello@wistab.ai"><MessageCircle size={20}/><span><b>Contact Wistab AI</b><small>hello@wistab.ai</small></span><ArrowUpRight size={17}/></a></div></section>
+      <ClientFinder />
       <section className="market-about-strip" id="about"><div className="container"><Sparkles size={19}/><p><b>About Wistab AI:</b> A friendly marketplace for discovering AI assistants across writing, business, research, design, development, and productivity.</p><a href="#agents">Explore the mall <ArrowRight size={14}/></a></div></section>
     </main>
 
