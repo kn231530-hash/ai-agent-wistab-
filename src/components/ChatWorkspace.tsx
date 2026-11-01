@@ -18,20 +18,37 @@ export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, 
   useEffect(() => { localStorage.setItem("wistab-chat-history", JSON.stringify(chats)); }, [chats]);
 
   const newChat = () => { setActiveId(null); setInput(""); };
-  const send = (event?: React.FormEvent) => {
+  const [sending, setSending] = useState(false);
+  const send = async (event?: React.FormEvent) => {
     event?.preventDefault();
     const text = input.trim();
-    if (!text) return;
+    if (!text || sending) return;
     const id = activeId || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
     const userMessage: Message = { role: "user", text };
-    const reply: Message = { role: "assistant", text: "Your message has been added to this Wistab AI chat. Live AI responses are not connected yet. To enable real answers, connect an AI model and a secure server-side API key in the project settings." };
     setChats(previous => {
       const existing = previous.find(c => c.id === id);
-      if (existing) return previous.map(c => c.id === id ? { ...c, messages: [...c.messages, userMessage, reply] } : c);
-      return [{ id, title: text.slice(0, 42), messages: [userMessage, reply] }, ...previous];
+      if (existing) return previous.map(c => c.id === id ? { ...c, messages: [...c.messages, userMessage] } : c);
+      return [{ id, title: text.slice(0, 42), messages: [userMessage] }, ...previous];
     });
     setActiveId(id);
     setInput("");
+    setSending(true);
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "The AI request failed. Please try again.");
+      const reply: Message = { role: "assistant", text: data.reply || "I couldn't generate a response. Please try again." };
+      setChats(previous => previous.map(c => c.id === id ? { ...c, messages: [...c.messages, reply] } : c));
+    } catch (error: any) {
+      const reply: Message = { role: "assistant", text: error?.message || "Unable to connect to Wistab AI. Please try again." };
+      setChats(previous => previous.map(c => c.id === id ? { ...c, messages: [...c.messages, reply] } : c));
+    } finally {
+      setSending(false);
+    }
   };
   const startVoice = () => {
     const API = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -74,7 +91,7 @@ export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, 
         {messages.length === 0 ? <div className="wistab-welcome"><div className="wistab-welcome-icon"><Sparkles size={28}/></div><p className="wistab-overline">YOUR AI WORKSPACE</p><h1>How can I help<br/><em>you today?</em></h1><p className="wistab-welcome-sub">Ask Wistab AI anything, explore ideas, or get help with your work.</p><div className="wistab-suggestions"><button onClick={() => setInput("Help me build a professional website")}> <span>✦</span> Build a professional website</button><button onClick={() => setInput("Create a business growth plan")}> <span>↗</span> Create a business plan</button><button onClick={() => setInput("Help me find potential clients")}> <span>◎</span> Find potential clients</button><button onClick={() => setInput("Write content for my business")}> <span>✎</span> Write business content</button></div></div> :
           <div className="wistab-message-list">{messages.map((message, index) => <div key={index} className={"wistab-message-row " + message.role}><div className="wistab-message-avatar">{message.role === "assistant" ? <Sparkles size={17}/> : "AK"}</div><div className="wistab-message-body"><b>{message.role === "assistant" ? "Wistab AI" : "You"}</b><p>{message.text}</p></div></div>)}</div>}
       </div>
-      <div className="wistab-composer-wrap"><form className="wistab-composer" onSubmit={send}><textarea rows={1} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }} placeholder="Message Wistab AI..." aria-label="Message Wistab AI"/><div className="wistab-composer-actions"><span>Press Enter to send · Shift + Enter for a new line</span><div><button type="button" className={"wistab-mic-btn " + (listening ? "listening" : "")} onClick={startVoice} aria-label="Use microphone"><Mic size={18}/></button><button type="submit" className="wistab-send-btn" disabled={!input.trim()} aria-label="Send message"><Send size={17}/></button></div></div></form><p className="wistab-disclaimer"><Bot size={13}/> Wistab AI preview · Live AI model connection is required for real AI answers.</p></div>
+      <div className="wistab-composer-wrap"><form className="wistab-composer" onSubmit={send}><textarea rows={1} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }} placeholder={sending ? "Wistab AI is thinking..." : "Message Wistab AI..."} aria-label="Message Wistab AI"/><div className="wistab-composer-actions"><span>Press Enter to send · Shift + Enter for a new line</span><div><button type="button" className={"wistab-mic-btn " + (listening ? "listening" : "")} onClick={startVoice} aria-label="Use microphone"><Mic size={18}/></button><button type="submit" className="wistab-send-btn" disabled={!input.trim() || sending} aria-label="Send message"><Send size={17}/></button></div></div></form><p className="wistab-disclaimer"><Bot size={13}/> Wistab AI preview · Live AI model connection is required for real AI answers.</p></div>
     </section>
   </div>;
 }
