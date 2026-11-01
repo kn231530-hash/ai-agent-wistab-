@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Sparkles, Plus, MessageSquare, Settings, Search, Mic, Send, Bot, Store, Users, PanelLeftClose, PanelLeft, Trash2 } from "lucide-react";
+import { Sparkles, Plus, MessageSquare, Settings, Search, Mic, Send, Bot, Store, Users, PanelLeftClose, PanelLeft, Trash2, ArrowLeft, ArrowRight } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; text: string };
 type Chat = { id: string; title: string; messages: Message[] };
 
-export default function ChatWorkspace({ onOpenMall, onOpenClientFinder }: { onOpenMall: () => void; onOpenClientFinder: () => void }) {
+export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, onForward, canGoBack, canGoForward }: { onOpenMall: () => void; onOpenClientFinder: () => void; onBack: () => void; onForward: () => void; canGoBack: boolean; canGoForward: boolean }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
@@ -63,7 +63,7 @@ export default function ChatWorkspace({ onOpenMall, onOpenClientFinder }: { onOp
       <div className="wistab-sidebar-bottom"><button className="wistab-side-link"><Settings size={17}/> Settings</button><div className="wistab-profile"><div>AK</div><span><b>Wistab User</b><small>Personal workspace</small></span></div></div>
     </aside>
     <section className="wistab-chat-main">
-      <header className="wistab-chat-topbar">{!sidebarOpen && <button className="wistab-icon-btn" onClick={() => setSidebarOpen(true)} aria-label="Open sidebar"><PanelLeft size={19}/></button>}<div className="wistab-model-name"><span><Sparkles size={16}/></span><b>Wistab AI</b><small>Assistant</small></div><button className="wistab-agent-mall-link" onClick={onOpenMall}><Store size={16}/> Explore AI Agent Mall</button></header>
+      <header className="wistab-chat-topbar"><div className="wistab-navigation-controls"><button className="wistab-icon-btn wistab-history-nav" onClick={onBack} disabled={!canGoBack} aria-label="Go back" title="Go back"><ArrowLeft size={18}/></button><button className="wistab-icon-btn wistab-history-nav" onClick={onForward} disabled={!canGoForward} aria-label="Go forward" title="Go forward"><ArrowRight size={18}/></button></div>{!sidebarOpen && <button className="wistab-icon-btn" onClick={() => setSidebarOpen(true)} aria-label="Open sidebar"><PanelLeft size={19}/></button>}<div className="wistab-model-name"><span><Sparkles size={16}/></span><b>Wistab AI</b><small>Assistant</small></div><button className="wistab-agent-mall-link" onClick={onOpenMall}><Store size={16}/> Explore AI Agent Mall</button></header>
       <div className="wistab-chat-content">
         {messages.length === 0 ? <div className="wistab-welcome"><div className="wistab-welcome-icon"><Sparkles size={28}/></div><p className="wistab-overline">YOUR AI WORKSPACE</p><h1>How can I help<br/><em>you today?</em></h1><p className="wistab-welcome-sub">Ask Wistab AI anything, explore ideas, or get help with your work.</p><div className="wistab-suggestions"><button onClick={() => setInput("Help me build a professional website")}> <span>✦</span> Build a professional website</button><button onClick={() => setInput("Create a business growth plan")}> <span>↗</span> Create a business plan</button><button onClick={() => setInput("Help me find potential clients")}> <span>◎</span> Find potential clients</button><button onClick={() => setInput("Write content for my business")}> <span>✎</span> Write business content</button></div></div> :
           <div className="wistab-message-list">{messages.map((message, index) => <div key={index} className={"wistab-message-row " + message.role}><div className="wistab-message-avatar">{message.role === "assistant" ? <Sparkles size={17}/> : "AK"}</div><div className="wistab-message-body"><b>{message.role === "assistant" ? "Wistab AI" : "You"}</b><p>{message.text}</p></div></div>)}</div>}
