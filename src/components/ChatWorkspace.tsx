@@ -4,7 +4,7 @@ import { Sparkles, Plus, MessageSquare, Settings, Search, Mic, Send, Bot, Store,
 type Message = { role: "user" | "assistant"; text: string };
 type Chat = { id: string; title: string; messages: Message[] };
 
-export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, onForward, canGoBack, canGoForward }: { onOpenMall: () => void; onOpenClientFinder: () => void; onBack: () => void; onForward: () => void; canGoBack: boolean; canGoForward: boolean }) {
+export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, onForward, canGoBack, canGoForward, onOpenInfo }: { onOpenMall: () => void; onOpenClientFinder: () => void; onOpenInfo: (page: "home" | "about" | "features" | "how" | "activity" | "contact") => void; onBack: () => void; onForward: () => void; canGoBack: boolean; canGoForward: boolean }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
@@ -58,6 +58,12 @@ export default function ChatWorkspace({ onOpenMall, onOpenClientFinder, onBack, 
       <button className="wistab-side-link active"><MessageSquare size={17}/> AI Assistant</button>
       <button className="wistab-side-link" onClick={onOpenMall}><Store size={17}/> AI Agent Mall</button>
       <button className="wistab-side-link" onClick={onOpenClientFinder}><Users size={17}/> Smart Client Finder</button>
+      <div className="wistab-sidebar-label">INFORMATION</div>
+      <button className="wistab-side-link" onClick={() => onOpenInfo("about")}>About Wistab AI</button>
+      <button className="wistab-side-link" onClick={() => onOpenInfo("features")}>Features</button>
+      <button className="wistab-side-link" onClick={() => onOpenInfo("how")}>How it works</button>
+      <button className="wistab-side-link" onClick={() => onOpenInfo("activity")}>Activity & Data</button>
+      <button className="wistab-side-link" onClick={() => onOpenInfo("contact")}>Contact</button>
       <div className="wistab-sidebar-label history-label">RECENT CHATS</div>
       <div className="wistab-history">{chats.map(chat => <button key={chat.id} className={"wistab-history-item " + (chat.id === activeId ? "selected" : "")} onClick={() => setActiveId(chat.id)}><MessageSquare size={14}/><span>{chat.title}</span><i onClick={e => removeChat(chat.id, e)}><Trash2 size={13}/></i></button>)}</div>
       <div className="wistab-sidebar-bottom"><button className="wistab-side-link"><Settings size={17}/> Settings</button><div className="wistab-profile"><div>AK</div><span><b>Wistab User</b><small>Personal workspace</small></span></div></div>
