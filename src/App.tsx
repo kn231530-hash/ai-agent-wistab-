@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import ClientFinder from "./components/ClientFinder";
+import ChatWorkspace from "./components/ChatWorkspace";
 import {
   Search, Sparkles, Bot, Code2, PenLine, BriefcaseBusiness, Palette, BookOpen, Mic, MicOff,
   CalendarDays, ArrowUpRight, X, Send, Menu, Heart, CheckCircle2,
@@ -41,6 +42,7 @@ export default function App() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
+  const [activeView, setActiveView] = useState<"chat" | "mall">("chat");
   const [sortBy, setSortBy] = useState("Recommended");
   const [isListening, setIsListening] = useState(false);
 
@@ -84,7 +86,7 @@ export default function App() {
     document.getElementById("agents")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  return <div className="site-shell daraz-shell">
+  return activeView === "chat" ? <ChatWorkspace onOpenMall={() => setActiveView("mall")} onOpenClientFinder={() => { setActiveView("mall"); setTimeout(() => document.getElementById("client-finder")?.scrollIntoView({ behavior: "smooth" }), 120); }} /> : <div className="site-shell daraz-shell">
     <div className="market-topline"><div className="container market-topline-inner"><span>Save more with Wistab AI deals</span><div><a href="#agents">SELL AN AI AGENT</a><a href="#contact">HELP & SUPPORT</a><button onClick={() => setAccountOpen(true)}>SIGN IN / REGISTER</button></div></div></div>
     <header className="site-header market-header"><div className="container market-nav">
       <a className="brand market-brand" href="#" aria-label="Wistab AI home"><span className="brand-mark"><Sparkles size={22}/></span><span>wistab<span className="brand-accent">AI</span><i>.</i></span></a>
@@ -99,7 +101,7 @@ export default function App() {
     </div>
     <div className={"market-category-nav " + (mobileMenu ? "market-nav-open" : "")}><div className="container market-category-inner">
       <a href="#categories" className="all-categories"><Grid2X2 size={17}/> Categories <ChevronDown size={14}/></a>
-      <a href="#agents">AI Agent Mall</a><a href="#client-finder">Client Finder</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
+      <a href="#agents">AI Agent Mall</a><a href="#" onClick={e => { e.preventDefault(); setActiveView("chat"); }}>AI Chat Workspace</a><a href="#client-finder">Client Finder</a><a href="#agents" onClick={() => setCategory("Business")}>Business Tools</a><a href="#agents" onClick={() => setCategory("Writing")}>Writing & Content</a><a href="#agents" onClick={() => setCategory("Development")}>Coding Helpers</a><a href="#creators">Become a Creator</a>
       <span className="category-nav-promo"><Zap size={14}/> Find your next AI teammate</span>
     </div></div></header>
 
