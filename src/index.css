@@ -675,3 +675,7 @@ footer{background:#282828}
 .wistab-send-btn{border:0;background:#111;color:#fff}.wistab-send-btn:disabled{background:#c9ced6;cursor:not-allowed}
 .wistab-disclaimer{display:flex;align-items:center;justify-content:center;gap:6px;color:#a0a7b2;font-size:10px;margin:10px 0 0}
 @media(max-width:700px){.wistab-chat-sidebar{position:fixed;z-index:30;inset:0 auto 0 0;width:min(290px,85vw);box-shadow:15px 0 45px #10182820}.wistab-chat-topbar{height:59px;padding:0 14px}.wistab-chat-content{padding:35px 16px 20px}.wistab-welcome h1{font-size:44px;letter-spacing:-2px}.wistab-welcome-sub{font-size:13px}.wistab-suggestions{grid-template-columns:1fr;gap:8px}.wistab-suggestions button{min-height:47px}.wistab-composer-wrap{width:calc(100% - 24px);padding-bottom:14px}.wistab-composer{border-radius:14px}.wistab-composer-actions>span{font-size:9px}.wistab-agent-mall-link{font-size:0;padding:9px}.wistab-agent-mall-link svg{width:18px;height:18px}}
+
+/* Wistab workspace back and forward navigation */
+.wistab-navigation-controls{display:flex;align-items:center;gap:4px;padding-right:5px;border-right:1px solid #edf0f3;margin-right:2px}.wistab-history-nav{width:34px;height:34px;border-radius:9px;cursor:pointer}.wistab-history-nav:hover:not(:disabled){background:#f0f4fb;color:#2164f5}.wistab-history-nav:disabled{opacity:.3;cursor:not-allowed}
+@media(max-width:700px){.wistab-navigation-controls{gap:0}.wistab-history-nav{width:30px;height:32px}}
