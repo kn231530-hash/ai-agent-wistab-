@@ -107,7 +107,7 @@ export default function App() {
       </form>
       <button className="market-action" onClick={() => setSavedOpen(true)}><span className="market-action-icon"><Heart size={20}/>{saved.length > 0 && <i>{saved.length}</i>}</span><span>Saved agents</span></button>
       <button className="market-action qr-action" onClick={() => setQrOpen(true)} aria-label="Show website QR code"><QrCode size={20}/><span>QR Code</span></button>
-      <button className="market-action account-action" onClick={() => setAccountOpen(true)}><UserRound size={20}/><span>Account</span><ChevronDown size={14}/></button>
+      <button className="market-action workspace-return-action" onClick={() => navigateView("chat")}><Sparkles size={19}/><span>AI Workspace</span></button>\n      <button className="market-action account-action" onClick={() => setAccountOpen(true)}><UserRound size={20}/><span>Account</span><ChevronDown size={14}/></button>
       <button className="mobile-menu" aria-label="Toggle navigation" onClick={() => setMobileMenu(!mobileMenu)}>{mobileMenu ? <X/> : <Menu/>}</button>
     </div>
     <div className={"market-category-nav " + (mobileMenu ? "market-nav-open" : "")}><div className="container market-category-inner">
