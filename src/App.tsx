@@ -41,10 +41,10 @@ export default function App() {
   const [messages, setMessages] = useState<string[]>([]);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [saved, setSaved] = useState<number[]>([]);
-  const [accountOpen, setAccountOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(() => new URLSearchParams(window.location.search).get("login") === "1");
   const [qrOpen, setQrOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
-  const [activeView, setActiveView] = useState<"chat" | "mall" | "home" | "about" | "features" | "how" | "activity" | "contact">("chat");
+  const [activeView, setActiveView] = useState<"chat" | "mall" | "home" | "about" | "features" | "how" | "activity" | "contact">(new URLSearchParams(window.location.search).get("login") === "1" ? "mall" : "chat");
   const [viewHistory, setViewHistory] = useState<Array<typeof activeView>>(["chat"]);
   const [viewIndex, setViewIndex] = useState(0);
   const navigateView = (view: typeof activeView) => {
