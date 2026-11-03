@@ -19,9 +19,14 @@ async function api(path: string, token?: string, init: RequestInit = {}) {
 }
 
 export default function AuthPortal({ onClose }: { onClose: () => void }) {
-  const [mode, setMode] = useState<"login" | "signup">(() => new URLSearchParams(window.location.search).get("signup") === "1" ? "signup" : "login");
+  const [mode, setMode] = useState<"login" | "signup" | "reset" | "new-password">(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    if (params.get("reset") === "1" || hash.get("type") === "recovery") return hash.get("type") === "recovery" ? "new-password" : "reset";
+    return params.get("signup") === "1" ? "signup" : "login";
+  });
   const [email, setEmail] = useState(OWNER_EMAIL);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("");\n  const [newPassword, setNewPassword] = useState("");\n  const [recoveryEmailSent, setRecoveryEmailSent] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
@@ -55,7 +60,7 @@ export default function AuthPortal({ onClose }: { onClose: () => void }) {
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); setBusy(true); setError(""); setNotice("");
     try {
-      if (mode === "signup") {
+      if (mode === "reset") {\n        await api("/auth/v1/recover?redirect_to=" + encodeURIComponent(window.location.origin + window.location.pathname + "?reset=1"), undefined, { method: "POST", body: JSON.stringify({ email: email.trim().toLowerCase() }) });\n        setRecoveryEmailSent(true); setNotice("Password reset email sent. Open the email on this device and follow its secure link to choose a new password.");\n      } else if (mode === "new-password") {\n        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));\n        const recoveryToken = hash.get("access_token");\n        if (!recoveryToken) throw new Error("The password-reset link is missing or expired. Request a new reset email.");\n        await api("/auth/v1/user", recoveryToken, { method: "PUT", body: JSON.stringify({ password: newPassword }) });\n        window.history.replaceState({}, document.title, window.location.pathname + "?login=1");\n        setMode("login"); setPassword(""); setNewPassword(""); setNotice("Password updated. You can now sign in with your new password.");\n      } else if (mode === "signup") {
         const result = await api("/auth/v1/signup", undefined, { method: "POST", body: JSON.stringify({ email: email.trim().toLowerCase(), password, data: { display_name: displayName } , gotrue_meta_security: {} }) });
         if (result.access_token) {
           localStorage.setItem("wist-ai-access-token", result.access_token); setToken(result.access_token); await loadAccount(result.access_token);
@@ -114,15 +119,15 @@ export default function AuthPortal({ onClose }: { onClose: () => void }) {
     {notice && <div className="wist-auth-alert success"><CheckCircle2 size={16}/>{notice}</div>}
     {!user ? <div className="wist-auth-body">
       <div className="wist-auth-icon"><ShieldCheck size={25}/></div><p className="wist-auth-kicker">SECURE ACCOUNT ACCESS</p>
-      <h3>{mode === "login" ? "Welcome back" : "Create your Wist AI account"}</h3>
-      <p className="wist-auth-copy">Sign in to save your workspace and manage your AI tools. The verified owner email receives the Owner dashboard.</p>
+      <h3>{mode === "login" ? "Welcome back" : mode === "signup" ? "Create your Wist AI account" : mode === "reset" ? "Reset your password" : "Choose a new password"}</h3>
+      <p className="wist-auth-copy">{mode === "login" ? "Sign in to save your workspace and manage your AI tools. The verified owner email receives the Owner dashboard." : mode === "signup" ? "Create an account to save your workspace and access your AI tools." : mode === "reset" ? "Enter your account email and we will send you a secure password-reset link." : "Enter a new password for your Wist AI account."}</p>
       <form onSubmit={submit} className="wist-auth-form">
         {mode === "signup" && <label>Your name<input value={displayName} onChange={e=>setDisplayName(e.target.value)} placeholder="Your name" required/></label>}
         <label>Email address<input type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" required/></label>
-        <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete={mode === "login" ? "current-password" : "new-password"} placeholder="At least 8 characters" required/></label>
-        <button className="wist-auth-submit" disabled={busy}>{busy ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}</button>
+        {mode === "login" && <><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="current-password" placeholder="Your password" required/></label><button type="button" className="wist-auth-forgot" onClick={()=>{setMode("reset");setError("");setNotice("");}}>Forgot password?</button></>}\n        {mode === "signup" && <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}\n        {mode === "new-password" && <label>New password<input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}
+        <button className="wist-auth-submit" disabled={busy}>{busy ? "Please wait..." : mode === "login" ? "Sign in" : mode === "signup" ? "Create account" : mode === "reset" ? "Send reset link" : "Update password"}</button>
       </form>
-      <p className="wist-auth-switch">{mode === "login" ? "New to Wist AI?" : "Already have an account?"} <button onClick={()=>{setMode(mode==="login"?"signup":"login");setError("");setNotice("");}}>{mode==="login"?"Create an account":"Sign in"}</button></p>
+      <p className="wist-auth-switch">{mode === "login" ? "New to Wist AI?" : mode === "signup" ? "Already have an account?" : "Remembered your password?"} <button onClick={()=>{setMode(mode==="login"?"signup":"login");setError("");setNotice("");setRecoveryEmailSent(false);}}>{mode==="login"?"Create an account":"Back to sign in"}</button></p>
       <p className="wist-auth-foot">Email verification may be required. Never share your password with anyone.</p>
     </div> : <div className="wist-auth-body wist-account-body">
       <div className="wist-account-heading"><div className="wist-auth-icon"><ShieldCheck size={25}/></div><div><p className="wist-auth-kicker">SIGNED IN</p><h3>{role === "owner" ? "Owner dashboard" : "Your account"}</h3><p className="wist-auth-copy">{user.email}</p></div></div>
