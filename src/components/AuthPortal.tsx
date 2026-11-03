@@ -26,7 +26,9 @@ export default function AuthPortal({ onClose }: { onClose: () => void }) {
     return params.get("signup") === "1" ? "signup" : "login";
   });
   const [email, setEmail] = useState(OWNER_EMAIL);
-  const [password, setPassword] = useState("");\n  const [newPassword, setNewPassword] = useState("");\n  const [recoveryEmailSent, setRecoveryEmailSent] = useState(false);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [recoveryEmailSent, setRecoveryEmailSent] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
