@@ -62,7 +62,17 @@ export default function AuthPortal({ onClose }: { onClose: () => void }) {
   const submit = async (event: React.FormEvent) => {
     event.preventDefault(); setBusy(true); setError(""); setNotice("");
     try {
-      if (mode === "reset") {\n        await api("/auth/v1/recover?redirect_to=" + encodeURIComponent(window.location.origin + window.location.pathname + "?reset=1"), undefined, { method: "POST", body: JSON.stringify({ email: email.trim().toLowerCase() }) });\n        setRecoveryEmailSent(true); setNotice("Password reset email sent. Open the email on this device and follow its secure link to choose a new password.");\n      } else if (mode === "new-password") {\n        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));\n        const recoveryToken = hash.get("access_token");\n        if (!recoveryToken) throw new Error("The password-reset link is missing or expired. Request a new reset email.");\n        await api("/auth/v1/user", recoveryToken, { method: "PUT", body: JSON.stringify({ password: newPassword }) });\n        window.history.replaceState({}, document.title, window.location.pathname + "?login=1");\n        setMode("login"); setPassword(""); setNewPassword(""); setNotice("Password updated. You can now sign in with your new password.");\n      } else if (mode === "signup") {
+      if (mode === "reset") {
+        await api("/auth/v1/recover?redirect_to=" + encodeURIComponent(window.location.origin + window.location.pathname + "?reset=1"), undefined, { method: "POST", body: JSON.stringify({ email: email.trim().toLowerCase() }) });
+        setRecoveryEmailSent(true); setNotice("Password reset email sent. Open the email on this device and follow its secure link to choose a new password.");
+      } else if (mode === "new-password") {
+        const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        const recoveryToken = hash.get("access_token");
+        if (!recoveryToken) throw new Error("The password-reset link is missing or expired. Request a new reset email.");
+        await api("/auth/v1/user", recoveryToken, { method: "PUT", body: JSON.stringify({ password: newPassword }) });
+        window.history.replaceState({}, document.title, window.location.pathname + "?login=1");
+        setMode("login"); setPassword(""); setNewPassword(""); setNotice("Password updated. You can now sign in with your new password.");
+      } else if (mode === "signup") {
         const result = await api("/auth/v1/signup", undefined, { method: "POST", body: JSON.stringify({ email: email.trim().toLowerCase(), password, data: { display_name: displayName } , gotrue_meta_security: {} }) });
         if (result.access_token) {
           localStorage.setItem("wist-ai-access-token", result.access_token); setToken(result.access_token); await loadAccount(result.access_token);
@@ -126,7 +136,9 @@ export default function AuthPortal({ onClose }: { onClose: () => void }) {
       <form onSubmit={submit} className="wist-auth-form">
         {mode === "signup" && <label>Your name<input value={displayName} onChange={e=>setDisplayName(e.target.value)} placeholder="Your name" required/></label>}
         <label>Email address<input type="email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email" required/></label>
-        {mode === "login" && <><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="current-password" placeholder="Your password" required/></label><button type="button" className="wist-auth-forgot" onClick={()=>{setMode("reset");setError("");setNotice("");}}>Forgot password?</button></>}\n        {mode === "signup" && <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}\n        {mode === "new-password" && <label>New password<input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}
+        {mode === "login" && <><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="current-password" placeholder="Your password" required/></label><button type="button" className="wist-auth-forgot" onClick={()=>{setMode("reset");setError("");setNotice("");}}>Forgot password?</button></>}
+        {mode === "signup" && <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}
+        {mode === "new-password" && <label>New password<input type="password" value={newPassword} onChange={e=>setNewPassword(e.target.value)} minLength={8} autoComplete="new-password" placeholder="At least 8 characters" required/></label>}
         <button className="wist-auth-submit" disabled={busy}>{busy ? "Please wait..." : mode === "login" ? "Sign in" : mode === "signup" ? "Create account" : mode === "reset" ? "Send reset link" : "Update password"}</button>
       </form>
       <p className="wist-auth-switch">{mode === "login" ? "New to Wist AI?" : mode === "signup" ? "Already have an account?" : "Remembered your password?"} <button onClick={()=>{setMode(mode==="login"?"signup":"login");setError("");setNotice("");setRecoveryEmailSent(false);}}>{mode==="login"?"Create an account":"Back to sign in"}</button></p>
