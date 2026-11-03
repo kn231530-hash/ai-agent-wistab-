@@ -719,3 +719,9 @@ footer{background:#282828}
 @media(max-width:520px){.wist-auth-body{padding:18px;max-height:74vh}.wist-agent-row{flex-wrap:wrap}.wist-agent-info{flex-basis:calc(100% - 50px)}.wist-agent-form-row{grid-template-columns:1fr}}
 
 .wist-auth-forgot{justify-self:end;border:0;background:transparent;color:#2463f6;font-size:11px;font-weight:700;cursor:pointer;margin-top:-5px;padding:0 2px}
+
+/* Clear shortcut from the marketplace back to the AI workspace */
+.market-action.workspace-return-action{padding:9px 12px;border:1px solid #dbe5ff;border-radius:10px;background:#f3f6ff;color:#245cf5;gap:8px;font-size:12px;font-weight:800;transition:background .18s ease,border-color .18s ease}
+.market-action.workspace-return-action>svg{color:#245cf5}
+.market-action.workspace-return-action:hover{background:#e8efff;border-color:#b8cbff}
+@media(max-width:700px){.market-action.workspace-return-action{padding:8px;font-size:0;gap:0}.market-action.workspace-return-action>svg{width:20px;height:20px}}
