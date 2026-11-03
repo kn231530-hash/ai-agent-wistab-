@@ -41,7 +41,7 @@ export default function App() {
   const [messages, setMessages] = useState<string[]>([]);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [saved, setSaved] = useState<number[]>([]);
-  const [accountOpen, setAccountOpen] = useState(() => new URLSearchParams(window.location.search).get("login") === "1");
+  const [accountOpen, setAccountOpen] = useState(() => ["1"].includes(new URLSearchParams(window.location.search).get("login") || "") || ["1"].includes(new URLSearchParams(window.location.search).get("signup") || ""));
   const [qrOpen, setQrOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
   const [activeView, setActiveView] = useState<"chat" | "mall" | "home" | "about" | "features" | "how" | "activity" | "contact">(new URLSearchParams(window.location.search).get("login") === "1" ? "mall" : "chat");
