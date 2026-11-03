@@ -20,13 +20,13 @@ export default async function handler(req: any, res: any) {
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: message,
-      config: { systemInstruction: "You are Wistab AI, a helpful, accurate assistant. Be clear, practical, and friendly. Do not claim to access live client databases or external systems unless tools actually provide that access." }
+      config: { systemInstruction: "You are Wist AI, a helpful, accurate assistant. Be clear, practical, and friendly. Do not claim to access live client databases or external systems unless tools actually provide that access." }
     });
     const answer = result.text?.trim();
     if (!answer) return res.status(502).json({ error: "The AI model returned an empty response. Please try again." });
     return res.status(200).json({ reply: answer });
   } catch (error: any) {
     console.error("Wistab Gemini API error:", error?.message || error);
-    return res.status(502).json({ error: "Wistab AI could not get a response from Gemini. Check the API key, Gemini API access, and Vercel function logs." });
+    return res.status(502).json({ error: "Wist AI could not get a response from Gemini. Check the API key, Gemini API access, and Vercel function logs." });
   }
 }
