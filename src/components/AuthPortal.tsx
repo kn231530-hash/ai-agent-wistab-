@@ -19,7 +19,7 @@ async function api(path: string, token?: string, init: RequestInit = {}) {
 }
 
 export default function AuthPortal({ onClose }: { onClose: () => void }) {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup">(() => new URLSearchParams(window.location.search).get("signup") === "1" ? "signup" : "login");
   const [email, setEmail] = useState(OWNER_EMAIL);
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
